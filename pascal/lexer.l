@@ -9,7 +9,6 @@
 
 #include <stdio.h>
 #include "pascal.tab.h"
-int line_no = 1;
 
 %}
 
@@ -116,9 +115,7 @@ NQUOTE  [^']
 
 [\t\f " "]                            ;
 
-\n                                line_no++;
-
 .                                { fprintf (stderr,
                                     "'%c' (0%o): illegal character at line %d\n",
-                                    yytext[0], yytext[0], line_no);
+                                    yytext[0], yytext[0], yylineno);
                                 }

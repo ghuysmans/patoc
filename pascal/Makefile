@@ -2,6 +2,8 @@
 CFLAGS=-g
 #generate headers
 YFLAGS=-d
+#track line number
+LFLAGS=--yylineno
 
 all: patoc
 clean:

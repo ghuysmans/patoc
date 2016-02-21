@@ -16,7 +16,13 @@
 */
 
 #include <stdio.h>
+extern int yylineno;
+extern char *yytext;
+extern int yylex(void);
 
+int yyerror(char *s) {
+	fprintf(stderr, "%s: at or before '%s', line %d\n", s, yytext, yylineno);
+}
 %}
 
 %token AND ARRAY ASSIGNMENT CASE CHARACTER_STRING
@@ -551,12 +557,3 @@ semicolon : SEMICOLON
 
 comma : COMMA
         ;
-
-%%
-
-extern int line_no;
-extern char *yytext;
-
-int yyerror(char *s) {
-	fprintf(stderr, "%s: at or before '%s', line %d\n", s, yytext, line_no);
-}
