@@ -15,7 +15,7 @@
 * beginnings of a separate compilation facility
 */
 
-#include<stdio.h>
+#include <stdio.h>
 
 %}
 
@@ -557,17 +557,6 @@ comma : COMMA
 extern int line_no;
 extern char *yytext;
 
-int yyerror(s)
-char *s;
-{
-        fprintf(stderr, "%s: at or before '%s', line %d\n", 
-                        s, yytext, line_no);
+int yyerror(char *s) {
+	fprintf(stderr, "%s: at or before '%s', line %d\n", s, yytext, line_no);
 }
-
-
-main (void) {
-	return yyparse();
-	}
-
-
-
