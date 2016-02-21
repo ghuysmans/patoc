@@ -1,11 +1,10 @@
 %{
 /*
- * pascal.l
  * Taken from http://ccia.ei.uvigo.es/docencia/PL/doc/bison/pascal/pascal.l
+ * License: unknown, maybe the same as pascal.y
+ * Guillaume Huysmans: (over?)simplified comments handling
  *
- * lex input file for pascal scanner
- *
- * extensions: to ways to spell "external" and "->" ok for "^".
+ * extensions: two ways to spell "external" and "->" ok for "^".
  */
 
 #include <stdio.h>
@@ -41,9 +40,12 @@ X       [xX]
 Y       [yY]
 Z       [zZ]
 NQUOTE  [^']
-       
+
 %%
 
+\{[^\}]*\} ;
+\(\*[^\)]*\*\) ;
+\/\/[^\n]*\n ;
 {A}{N}{D}                          return(AND);
 {A}{R}{R}{A}{Y}                    return(ARRAY);
 {C}{A}{S}{E}                       return(CASE);
@@ -112,26 +114,6 @@ NQUOTE  [^']
 "->"                        |
 "^"                                return(UPARROW);
 
-"(*"                        |
-"{"                                { register int c;
-                                    while ((c = input()))
-                                    {
-                                      if (c == '}')
-                                        break;
-                                      else if (c == '*')
-                                      {
-                                        if ((c = input()) == ')')
-                                          break;
-                                        else
-                                          unput (c);
-                                      }          
-                                      else if (c == '\n')
-                                        line_no++;
-                                      else if (c == 0)
-                                        commenteof();
-                                    }
-                                }
-
 [\t\f " "]                            ;
 
 \n                                line_no++;
@@ -140,17 +122,3 @@ NQUOTE  [^']
                                     "'%c' (0%o): illegal character at line %d\n",
                                     yytext[0], yytext[0], line_no);
                                 }
-
-%%
-
-commenteof()
-{
-  fprintf (stderr, "Unexpected EOF inside comment at line %d\n", line_no);
-  exit (1);
-}
-
-yywrap ()
-{
-  return (1);
-}
-
