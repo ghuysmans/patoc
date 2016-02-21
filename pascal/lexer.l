@@ -113,7 +113,7 @@ NQUOTE  [^']
 "->"                        |
 "^"                                return(UPARROW);
 
-[\t\f " "]                            ;
+[\n\t\f " "]                            ;
 
 .                                { fprintf (stderr,
                                     "'%c' (0%o): illegal character at line %d\n",
