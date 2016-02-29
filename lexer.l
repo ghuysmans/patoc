@@ -8,8 +8,14 @@
  */
 
 #include <stdio.h>
+#include <string.h>
+#define YYSTYPE char*
 #include "pascal.tab.h"
 
+int dup(int token) {
+	yylval = strdup(yytext);
+	return token;
+}
 %}
 
 A       [aA]
@@ -84,13 +90,13 @@ NQUOTE  [^']
 {V}{A}{R}                          return(VAR);
 {W}{H}{I}{L}{E}                    return(WHILE);
 {W}{I}{T}{H}                       return(WITH);
-[a-zA-Z]([a-zA-Z0-9\-])*           return(IDENTIFIER);
+[a-zA-Z]([a-zA-Z0-9\-])*           return dup(IDENTIFIER);
 
 ":="                               return(ASSIGNMENT);
 '({NQUOTE}|'')+'                   return(CHARACTER_STRING);
 ":"                                return(COLON);
 ","                                return(COMMA);
-[0-9]+                             return(DIGSEQ);
+[0-9]+                             return dup(DIGSEQ);
 "."                                return(DOT);
 ".."                               return(DOTDOT);
 "="                                return(EQUAL);
@@ -104,7 +110,7 @@ NQUOTE  [^']
 "<>"                               return(NOTEQUAL);
 "+"                                return(PLUS);
 "]"                                return(RBRAC);
-[0-9]+"."[0-9]+                    return(REALNUMBER);
+[0-9]+"."[0-9]+                    return dup(REALNUMBER);
 ")"                                return(RPAREN);
 ";"                                return(SEMICOLON);
 "/"                                return(SLASH);
