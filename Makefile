@@ -5,7 +5,7 @@ YFLAGS=-d
 #track line number
 LFLAGS=--yylineno
 
-all: patoc
+all: patoc types
 clean:
 	rm pascal.c *.tab.h lexer.c *.o patoc
 
